@@ -1,0 +1,8 @@
+server:
+  port: 9030
+
+spring:
+  application:
+    name: CARD-SYSTEM-SERVICE
+  config:
+    import: configserver:http://${CONFIG_SERVER_URL:localhost}:9296

@@ -1,0 +1,8 @@
+server:
+  port: 9020
+
+spring:
+  application:
+    name: CORE-BANKING-SERVICE
+  config:
+    import: configserver:http://${CONFIG_SERVER_URL:localhost}:9296
