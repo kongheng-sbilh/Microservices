@@ -1,0 +1,45 @@
+version: '3'
+services:
+  service_registry:
+    image: 'konghengsbilh/service_registry:0.0.1'
+    container_name: service_registry
+    ports:
+      - '8761:8761'
+  configserver:
+    image: 'konghengsbilh/configserver:0.0.1'
+    container_name: configserver
+    ports:
+      - '9296:9296'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://service_registry:8761/eureka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://configserver:9296/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      - service_registry
+  authentication_service:
+    image: 'konghengsbilh/authentication_service:latest'
+    container_name: authentication_service
+    ports:
+      - '9010:9010'
+    depends_on:
+      configserver:
+        condition: service_healthy
+  card_system_service:
+    image: 'konghengsbilh/card_system_service:latest'
+    container_name: card_system_service
+    ports:
+      - '9030:9030'
+    depends_on:
+      configserver:
+        condition: service_healthy
+  core_banking_service:
+    image: 'konghengsbilh/core_banking_service:latest'
+    container_name: core_banking_service
+    ports:
+      - '9020:9020'
+    depends_on:
+      configserver:
+        condition: service_healthy
