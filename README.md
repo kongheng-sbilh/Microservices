@@ -26,8 +26,8 @@
 * Access to http://localhost:9020/swagger-ui/index.html
 * Select endpoint '/core/user/{id}'
 * Click on 'Try it out'
-* Parse the user id you want to get the information ( Noted: tested user id from 1 to 5 )
-* Parse the token that we get from the previos step in the Authoriation field
+* Paste the user id you want to get the information ( Noted: tested user id from 1 to 5 )
+* Paste the token that we get from the previos step in the Authoriation field
 
 ![img_1.png](img_1.png)
 
