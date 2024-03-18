@@ -1,54 +1,54 @@
 version: '3'
 services:
-  serviceregistry:
+  serviceRegistry:
     image: 'konghengsbilh/service_registry:0.0.1'
-    container_name: serviceregistry
+    container_name: Service-Registry
     ports:
       - '8761:8761'
-  configserver:
+  configServer:
     image: 'konghengsbilh/configserver:0.0.1'
-    container_name: configserver
+    container_name: Config-Server
     ports:
       - '9296:9296'
     environment:
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - EUREKA_SERVER_ADDRESS=http://serviceRegistry:8761/eureka
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9296/actuator/health"]
       interval: 10s
       timeout: 5s
       retries: 5
     depends_on:
-      - serviceregistry
-  authenticationservice:
+      - serviceRegistry
+  authenticationService:
     image: 'konghengsbilh/authentication_service:latest'
-    container_name: authenticationservice
+    container_name: Authentication-Service
     ports:
       - '9010:9010'
     environment:
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
-      - CONFIG_SERVER_URL=configserver
+      - EUREKA_SERVER_ADDRESS=http://serviceRegistry:8761/eureka
+      - CONFIG_SERVER_URL=configServer
     depends_on:
-      configserver:
+      configServer:
         condition: service_healthy
-  cardsystemservice:
+  cardSystemService:
     image: 'konghengsbilh/card_system_service:latest'
-    container_name: cardsystemservice
+    container_name: Card-System-Service
     ports:
       - '9030:9030'
     environment:
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
-      - CONFIG_SERVER_URL=configserver
+      - EUREKA_SERVER_ADDRESS=http://serviceRegistry:8761/eureka
+      - CONFIG_SERVER_URL=configServer
     depends_on:
-      configserver:
+      configServer:
         condition: service_healthy
-  corebankingservice:
+  coreBankingService:
     image: 'konghengsbilh/core_banking_service:latest'
-    container_name: corebankingservice
+    container_name: Core-Banking-Service
     ports:
       - '9020:9020'
     environment:
-      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
-      - CONFIG_SERVER_URL=configserver
+      - EUREKA_SERVER_ADDRESS=http://serviceRegistry:8761/eureka
+      - CONFIG_SERVER_URL=configServer
     depends_on:
-      configserver:
+      configServer:
         condition: service_healthy
